@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Core",
-  description: "The web service for Core",
+  title: "Messages",
+  description: "The web service for Messages",
 };
 
 export default function RootLayout({
