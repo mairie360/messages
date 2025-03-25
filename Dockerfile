@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
-WORKDIR /usr/src/messages-web
+WORKDIR /usr/src/messages
 
 # Copy the package files
 COPY package.json package-lock.json ./
@@ -25,10 +25,10 @@ COPY . .
 RUN npm run build
 
 # Create non-root user and group
-RUN groupadd --system messages-web && useradd --no-log-init --system -g messages-web messages-web
+RUN groupadd --system messages && useradd --no-log-init --system -g messages messages
 
 # Set permissions
-USER messages-web
+USER messages
 
 # Set entrypoint
 ENTRYPOINT ["/usr/local/bin/npm"]

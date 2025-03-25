@@ -1,6 +1,6 @@
-# messages-web
+# messages
 
-The web service for Messages.
+The Messages's module.
 
 ## Getting Started
 

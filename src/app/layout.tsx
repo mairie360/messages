@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Messages",
-  description: "The web service for Messages",
+  description: "The Messages's module.",
 };
 
 export default function RootLayout({

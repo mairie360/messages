@@ -87,7 +87,7 @@ services:
       timeout: 5s
       retries: 5
 
-  messages-web:
+  messages:
     build:
       context: .
       dockerfile: Dockerfile
