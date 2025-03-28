@@ -4,7 +4,7 @@ ARG NODE_VERSION=23.10.0
 # Stage 1: Builder
 FROM node:${NODE_VERSION}-bookworm-slim AS builder
 
-# Install runtime dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Set working directory
 WORKDIR /usr/src/messages
 
-# Copy the package files
+# Copy package messages separately to leverage caching
 COPY package.json package-lock.json ./
 
 # Install dependencies
@@ -24,12 +24,19 @@ COPY . .
 # Build the project
 RUN npm run build
 
-# Create non-root user and group
-RUN groupadd --system messages && useradd --no-log-init --system -g messages messages
+# Create a non-root user
+RUN useradd --system --create-home --shell /usr/sbin/nologin messages
+
+# Change ownership of the project
+RUN chown -R messages:messages /usr/src/messages
 
 # Set permissions
 USER messages
 
-# Set entrypoint
-ENTRYPOINT ["/usr/local/bin/npm"]
-CMD ["run", "start"]
+# Set environment variables
+ENV HOSTNAME="0.0.0.0"
+ENV PORT=3000
+
+# Start the application
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["npm run start -- --hostname=$HOSTNAME --port=$PORT"]
